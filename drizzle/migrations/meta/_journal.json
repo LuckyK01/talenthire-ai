@@ -8,6 +8,13 @@
       "when": 1790586044289,
       "tag": "0000_hireflow_core_schema_and_seed",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1790586066364,
+      "tag": "0001_lock_down_helper_function_execute",
+      "breakpoints": true
     }
   ]
 }
