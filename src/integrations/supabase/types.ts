@@ -1156,6 +1156,16 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      ensure_profile: {
+        Args: never
+        Returns: {
+          department: string
+          email: string
+          id: string
+          name: string
+          role: Database["public"]["Enums"]["app_role"]
+        }[]
+      }
       has_role: {
         Args: {
           _role: Database["public"]["Enums"]["app_role"]
