@@ -14,9 +14,12 @@ import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as AuthenticatedApprovalsRouteImport } from './routes/_authenticated/approvals'
 import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
+import { Route as AuthenticatedVendorRankingRouteImport } from './routes/_authenticated/vendor-ranking'
 import { Route as AuthenticatedRequirementsIndexRouteImport } from './routes/_authenticated/requirements.index'
+import { Route as AuthenticatedRequirementsIdRouteImport } from './routes/_authenticated/requirements.$id'
 import { Route as AuthenticatedRequirementsNewRouteImport } from './routes/_authenticated/requirements.new'
 import { Route as AuthenticatedVendorsIndexRouteImport } from './routes/_authenticated/vendors.index'
+import { Route as AuthenticatedVendorsIdRouteImport } from './routes/_authenticated/vendors.$id'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -42,10 +45,22 @@ const AuthenticatedDashboardRoute = AuthenticatedDashboardRouteImport.update({
   path: '/dashboard',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const AuthenticatedVendorRankingRoute =
+  AuthenticatedVendorRankingRouteImport.update({
+    id: '/vendor-ranking',
+    path: '/vendor-ranking',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 const AuthenticatedRequirementsIndexRoute =
   AuthenticatedRequirementsIndexRouteImport.update({
     id: '/requirements/',
     path: '/requirements/',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedRequirementsIdRoute =
+  AuthenticatedRequirementsIdRouteImport.update({
+    id: '/requirements/$id',
+    path: '/requirements/$id',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
 const AuthenticatedRequirementsNewRoute =
@@ -60,13 +75,21 @@ const AuthenticatedVendorsIndexRoute =
     path: '/vendors/',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
+const AuthenticatedVendorsIdRoute = AuthenticatedVendorsIdRouteImport.update({
+  id: '/vendors/$id',
+  path: '/vendors/$id',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
   '/approvals': typeof AuthenticatedApprovalsRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
+  '/vendor-ranking': typeof AuthenticatedVendorRankingRoute
+  '/requirements/$id': typeof AuthenticatedRequirementsIdRoute
   '/requirements/new': typeof AuthenticatedRequirementsNewRoute
+  '/vendors/$id': typeof AuthenticatedVendorsIdRoute
   '/requirements/': typeof AuthenticatedRequirementsIndexRoute
   '/vendors/': typeof AuthenticatedVendorsIndexRoute
 }
@@ -75,7 +98,10 @@ export interface FileRoutesByTo {
   '/auth': typeof AuthRoute
   '/approvals': typeof AuthenticatedApprovalsRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
+  '/vendor-ranking': typeof AuthenticatedVendorRankingRoute
+  '/requirements/$id': typeof AuthenticatedRequirementsIdRoute
   '/requirements/new': typeof AuthenticatedRequirementsNewRoute
+  '/vendors/$id': typeof AuthenticatedVendorsIdRoute
   '/requirements': typeof AuthenticatedRequirementsIndexRoute
   '/vendors': typeof AuthenticatedVendorsIndexRoute
 }
@@ -86,7 +112,10 @@ export interface FileRoutesById {
   '/auth': typeof AuthRoute
   '/_authenticated/approvals': typeof AuthenticatedApprovalsRoute
   '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
+  '/_authenticated/vendor-ranking': typeof AuthenticatedVendorRankingRoute
+  '/_authenticated/requirements/$id': typeof AuthenticatedRequirementsIdRoute
   '/_authenticated/requirements/new': typeof AuthenticatedRequirementsNewRoute
+  '/_authenticated/vendors/$id': typeof AuthenticatedVendorsIdRoute
   '/_authenticated/requirements/': typeof AuthenticatedRequirementsIndexRoute
   '/_authenticated/vendors/': typeof AuthenticatedVendorsIndexRoute
 }
@@ -97,7 +126,10 @@ export interface FileRouteTypes {
     | '/auth'
     | '/approvals'
     | '/dashboard'
+    | '/vendor-ranking'
+    | '/requirements/$id'
     | '/requirements/new'
+    | '/vendors/$id'
     | '/requirements/'
     | '/vendors/'
   fileRoutesByTo: FileRoutesByTo
@@ -106,7 +138,10 @@ export interface FileRouteTypes {
     | '/auth'
     | '/approvals'
     | '/dashboard'
+    | '/vendor-ranking'
+    | '/requirements/$id'
     | '/requirements/new'
+    | '/vendors/$id'
     | '/requirements'
     | '/vendors'
   id:
@@ -116,7 +151,10 @@ export interface FileRouteTypes {
     | '/auth'
     | '/_authenticated/approvals'
     | '/_authenticated/dashboard'
+    | '/_authenticated/vendor-ranking'
+    | '/_authenticated/requirements/$id'
     | '/_authenticated/requirements/new'
+    | '/_authenticated/vendors/$id'
     | '/_authenticated/requirements/'
     | '/_authenticated/vendors/'
   fileRoutesById: FileRoutesById
@@ -164,11 +202,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedDashboardRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/vendor-ranking': {
+      id: '/_authenticated/vendor-ranking'
+      path: '/vendor-ranking'
+      fullPath: '/vendor-ranking'
+      preLoaderRoute: typeof AuthenticatedVendorRankingRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/requirements/': {
       id: '/_authenticated/requirements/'
       path: '/requirements'
       fullPath: '/requirements/'
       preLoaderRoute: typeof AuthenticatedRequirementsIndexRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/requirements/$id': {
+      id: '/_authenticated/requirements/$id'
+      path: '/requirements/$id'
+      fullPath: '/requirements/$id'
+      preLoaderRoute: typeof AuthenticatedRequirementsIdRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
     '/_authenticated/requirements/new': {
@@ -185,13 +237,23 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedVendorsIndexRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/vendors/$id': {
+      id: '/_authenticated/vendors/$id'
+      path: '/vendors/$id'
+      fullPath: '/vendors/$id'
+      preLoaderRoute: typeof AuthenticatedVendorsIdRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
   }
 }
 
 interface AuthenticatedRouteRouteChildren {
   AuthenticatedApprovalsRoute: typeof AuthenticatedApprovalsRoute
   AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRoute
+  AuthenticatedVendorRankingRoute: typeof AuthenticatedVendorRankingRoute
+  AuthenticatedRequirementsIdRoute: typeof AuthenticatedRequirementsIdRoute
   AuthenticatedRequirementsNewRoute: typeof AuthenticatedRequirementsNewRoute
+  AuthenticatedVendorsIdRoute: typeof AuthenticatedVendorsIdRoute
   AuthenticatedRequirementsIndexRoute: typeof AuthenticatedRequirementsIndexRoute
   AuthenticatedVendorsIndexRoute: typeof AuthenticatedVendorsIndexRoute
 }
@@ -199,7 +261,10 @@ interface AuthenticatedRouteRouteChildren {
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedApprovalsRoute: AuthenticatedApprovalsRoute,
   AuthenticatedDashboardRoute: AuthenticatedDashboardRoute,
+  AuthenticatedVendorRankingRoute: AuthenticatedVendorRankingRoute,
+  AuthenticatedRequirementsIdRoute: AuthenticatedRequirementsIdRoute,
   AuthenticatedRequirementsNewRoute: AuthenticatedRequirementsNewRoute,
+  AuthenticatedVendorsIdRoute: AuthenticatedVendorsIdRoute,
   AuthenticatedRequirementsIndexRoute: AuthenticatedRequirementsIndexRoute,
   AuthenticatedVendorsIndexRoute: AuthenticatedVendorsIndexRoute,
 }
