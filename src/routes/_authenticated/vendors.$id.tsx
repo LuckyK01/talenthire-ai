@@ -47,7 +47,7 @@ function VendorDetail() {
           <Panel>
             <DataTable head={["Skill", "Score", "Recent", "Historical", "Samples", "Trend"]}>
               {(skills.data ?? []).map((s) => (
-                <tr key={s.id}><Td>{s.skill_id ? (s as unknown as { skill?: string }).skill ?? s.skill_id : "—"}</Td><Td><div className="w-28"><ScoreBar value={s.score} /></div></Td><Td>{s.recent_score ?? "—"}</Td><Td>{s.historical_score ?? "—"}</Td><Td>{s.sample_size < 3 ? <span className="text-amber">{s.sample_size} · Limited data</span> : s.sample_size}</Td><Td><TrendArrow trend={s.trend} /></Td></tr>
+                <tr key={s.id}><Td>{s.skill}</Td><Td><div className="w-28"><ScoreBar value={s.score} /></div></Td><Td>{s.recent_score ?? "—"}</Td><Td>{s.historical_score ?? "—"}</Td><Td>{s.sample_size < 3 ? <span className="text-amber">{s.sample_size} · Limited data</span> : s.sample_size}</Td><Td><TrendArrow trend={s.trend} /></Td></tr>
               ))}
             </DataTable>
           </Panel>
