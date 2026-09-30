@@ -12,8 +12,17 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as AuthRouteImport } from './routes/auth'
+import { Route as AuthenticatedAiControlCenterRouteImport } from './routes/_authenticated/ai-control-center'
 import { Route as AuthenticatedApprovalsRouteImport } from './routes/_authenticated/approvals'
+import { Route as AuthenticatedAuditRouteImport } from './routes/_authenticated/audit'
+import { Route as AuthenticatedCandidatesRouteImport } from './routes/_authenticated/candidates'
 import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
+import { Route as AuthenticatedInterviewsRouteImport } from './routes/_authenticated/interviews'
+import { Route as AuthenticatedOffersRouteImport } from './routes/_authenticated/offers'
+import { Route as AuthenticatedOnboardingRouteImport } from './routes/_authenticated/onboarding'
+import { Route as AuthenticatedReportsRouteImport } from './routes/_authenticated/reports'
+import { Route as AuthenticatedSettingsRouteImport } from './routes/_authenticated/settings'
+import { Route as AuthenticatedUsersRouteImport } from './routes/_authenticated/users'
 import { Route as AuthenticatedVendorRankingRouteImport } from './routes/_authenticated/vendor-ranking'
 import { Route as AuthenticatedRequirementsIndexRouteImport } from './routes/_authenticated/requirements.index'
 import { Route as AuthenticatedRequirementsIdRouteImport } from './routes/_authenticated/requirements.$id'
@@ -35,14 +44,60 @@ const AuthRoute = AuthRouteImport.update({
   path: '/auth',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AuthenticatedAiControlCenterRoute =
+  AuthenticatedAiControlCenterRouteImport.update({
+    id: '/ai-control-center',
+    path: '/ai-control-center',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 const AuthenticatedApprovalsRoute = AuthenticatedApprovalsRouteImport.update({
   id: '/approvals',
   path: '/approvals',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const AuthenticatedAuditRoute = AuthenticatedAuditRouteImport.update({
+  id: '/audit',
+  path: '/audit',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedCandidatesRoute = AuthenticatedCandidatesRouteImport.update({
+  id: '/candidates',
+  path: '/candidates',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
 const AuthenticatedDashboardRoute = AuthenticatedDashboardRouteImport.update({
   id: '/dashboard',
   path: '/dashboard',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedInterviewsRoute = AuthenticatedInterviewsRouteImport.update({
+  id: '/interviews',
+  path: '/interviews',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedOffersRoute = AuthenticatedOffersRouteImport.update({
+  id: '/offers',
+  path: '/offers',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedOnboardingRoute = AuthenticatedOnboardingRouteImport.update({
+  id: '/onboarding',
+  path: '/onboarding',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedReportsRoute = AuthenticatedReportsRouteImport.update({
+  id: '/reports',
+  path: '/reports',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedSettingsRoute = AuthenticatedSettingsRouteImport.update({
+  id: '/settings',
+  path: '/settings',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedUsersRoute = AuthenticatedUsersRouteImport.update({
+  id: '/users',
+  path: '/users',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
 const AuthenticatedVendorRankingRoute =
@@ -84,8 +139,17 @@ const AuthenticatedVendorsIdRoute = AuthenticatedVendorsIdRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
+  '/ai-control-center': typeof AuthenticatedAiControlCenterRoute
   '/approvals': typeof AuthenticatedApprovalsRoute
+  '/audit': typeof AuthenticatedAuditRoute
+  '/candidates': typeof AuthenticatedCandidatesRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
+  '/interviews': typeof AuthenticatedInterviewsRoute
+  '/offers': typeof AuthenticatedOffersRoute
+  '/onboarding': typeof AuthenticatedOnboardingRoute
+  '/reports': typeof AuthenticatedReportsRoute
+  '/settings': typeof AuthenticatedSettingsRoute
+  '/users': typeof AuthenticatedUsersRoute
   '/vendor-ranking': typeof AuthenticatedVendorRankingRoute
   '/requirements/$id': typeof AuthenticatedRequirementsIdRoute
   '/requirements/new': typeof AuthenticatedRequirementsNewRoute
@@ -96,8 +160,17 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
+  '/ai-control-center': typeof AuthenticatedAiControlCenterRoute
   '/approvals': typeof AuthenticatedApprovalsRoute
+  '/audit': typeof AuthenticatedAuditRoute
+  '/candidates': typeof AuthenticatedCandidatesRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
+  '/interviews': typeof AuthenticatedInterviewsRoute
+  '/offers': typeof AuthenticatedOffersRoute
+  '/onboarding': typeof AuthenticatedOnboardingRoute
+  '/reports': typeof AuthenticatedReportsRoute
+  '/settings': typeof AuthenticatedSettingsRoute
+  '/users': typeof AuthenticatedUsersRoute
   '/vendor-ranking': typeof AuthenticatedVendorRankingRoute
   '/requirements/$id': typeof AuthenticatedRequirementsIdRoute
   '/requirements/new': typeof AuthenticatedRequirementsNewRoute
@@ -110,8 +183,17 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
   '/auth': typeof AuthRoute
+  '/_authenticated/ai-control-center': typeof AuthenticatedAiControlCenterRoute
   '/_authenticated/approvals': typeof AuthenticatedApprovalsRoute
+  '/_authenticated/audit': typeof AuthenticatedAuditRoute
+  '/_authenticated/candidates': typeof AuthenticatedCandidatesRoute
   '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
+  '/_authenticated/interviews': typeof AuthenticatedInterviewsRoute
+  '/_authenticated/offers': typeof AuthenticatedOffersRoute
+  '/_authenticated/onboarding': typeof AuthenticatedOnboardingRoute
+  '/_authenticated/reports': typeof AuthenticatedReportsRoute
+  '/_authenticated/settings': typeof AuthenticatedSettingsRoute
+  '/_authenticated/users': typeof AuthenticatedUsersRoute
   '/_authenticated/vendor-ranking': typeof AuthenticatedVendorRankingRoute
   '/_authenticated/requirements/$id': typeof AuthenticatedRequirementsIdRoute
   '/_authenticated/requirements/new': typeof AuthenticatedRequirementsNewRoute
@@ -124,8 +206,17 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/auth'
+    | '/ai-control-center'
     | '/approvals'
+    | '/audit'
+    | '/candidates'
     | '/dashboard'
+    | '/interviews'
+    | '/offers'
+    | '/onboarding'
+    | '/reports'
+    | '/settings'
+    | '/users'
     | '/vendor-ranking'
     | '/requirements/$id'
     | '/requirements/new'
@@ -136,8 +227,17 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/auth'
+    | '/ai-control-center'
     | '/approvals'
+    | '/audit'
+    | '/candidates'
     | '/dashboard'
+    | '/interviews'
+    | '/offers'
+    | '/onboarding'
+    | '/reports'
+    | '/settings'
+    | '/users'
     | '/vendor-ranking'
     | '/requirements/$id'
     | '/requirements/new'
@@ -149,8 +249,17 @@ export interface FileRouteTypes {
     | '/'
     | '/_authenticated'
     | '/auth'
+    | '/_authenticated/ai-control-center'
     | '/_authenticated/approvals'
+    | '/_authenticated/audit'
+    | '/_authenticated/candidates'
     | '/_authenticated/dashboard'
+    | '/_authenticated/interviews'
+    | '/_authenticated/offers'
+    | '/_authenticated/onboarding'
+    | '/_authenticated/reports'
+    | '/_authenticated/settings'
+    | '/_authenticated/users'
     | '/_authenticated/vendor-ranking'
     | '/_authenticated/requirements/$id'
     | '/_authenticated/requirements/new'
@@ -188,6 +297,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_authenticated/ai-control-center': {
+      id: '/_authenticated/ai-control-center'
+      path: '/ai-control-center'
+      fullPath: '/ai-control-center'
+      preLoaderRoute: typeof AuthenticatedAiControlCenterRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/approvals': {
       id: '/_authenticated/approvals'
       path: '/approvals'
@@ -195,11 +311,67 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedApprovalsRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/audit': {
+      id: '/_authenticated/audit'
+      path: '/audit'
+      fullPath: '/audit'
+      preLoaderRoute: typeof AuthenticatedAuditRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/candidates': {
+      id: '/_authenticated/candidates'
+      path: '/candidates'
+      fullPath: '/candidates'
+      preLoaderRoute: typeof AuthenticatedCandidatesRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/dashboard': {
       id: '/_authenticated/dashboard'
       path: '/dashboard'
       fullPath: '/dashboard'
       preLoaderRoute: typeof AuthenticatedDashboardRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/interviews': {
+      id: '/_authenticated/interviews'
+      path: '/interviews'
+      fullPath: '/interviews'
+      preLoaderRoute: typeof AuthenticatedInterviewsRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/offers': {
+      id: '/_authenticated/offers'
+      path: '/offers'
+      fullPath: '/offers'
+      preLoaderRoute: typeof AuthenticatedOffersRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/onboarding': {
+      id: '/_authenticated/onboarding'
+      path: '/onboarding'
+      fullPath: '/onboarding'
+      preLoaderRoute: typeof AuthenticatedOnboardingRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/reports': {
+      id: '/_authenticated/reports'
+      path: '/reports'
+      fullPath: '/reports'
+      preLoaderRoute: typeof AuthenticatedReportsRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/settings': {
+      id: '/_authenticated/settings'
+      path: '/settings'
+      fullPath: '/settings'
+      preLoaderRoute: typeof AuthenticatedSettingsRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/users': {
+      id: '/_authenticated/users'
+      path: '/users'
+      fullPath: '/users'
+      preLoaderRoute: typeof AuthenticatedUsersRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
     '/_authenticated/vendor-ranking': {
@@ -248,8 +420,17 @@ declare module '@tanstack/react-router' {
 }
 
 interface AuthenticatedRouteRouteChildren {
+  AuthenticatedAiControlCenterRoute: typeof AuthenticatedAiControlCenterRoute
   AuthenticatedApprovalsRoute: typeof AuthenticatedApprovalsRoute
+  AuthenticatedAuditRoute: typeof AuthenticatedAuditRoute
+  AuthenticatedCandidatesRoute: typeof AuthenticatedCandidatesRoute
   AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRoute
+  AuthenticatedInterviewsRoute: typeof AuthenticatedInterviewsRoute
+  AuthenticatedOffersRoute: typeof AuthenticatedOffersRoute
+  AuthenticatedOnboardingRoute: typeof AuthenticatedOnboardingRoute
+  AuthenticatedReportsRoute: typeof AuthenticatedReportsRoute
+  AuthenticatedSettingsRoute: typeof AuthenticatedSettingsRoute
+  AuthenticatedUsersRoute: typeof AuthenticatedUsersRoute
   AuthenticatedVendorRankingRoute: typeof AuthenticatedVendorRankingRoute
   AuthenticatedRequirementsIdRoute: typeof AuthenticatedRequirementsIdRoute
   AuthenticatedRequirementsNewRoute: typeof AuthenticatedRequirementsNewRoute
@@ -259,8 +440,17 @@ interface AuthenticatedRouteRouteChildren {
 }
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
+  AuthenticatedAiControlCenterRoute: AuthenticatedAiControlCenterRoute,
   AuthenticatedApprovalsRoute: AuthenticatedApprovalsRoute,
+  AuthenticatedAuditRoute: AuthenticatedAuditRoute,
+  AuthenticatedCandidatesRoute: AuthenticatedCandidatesRoute,
   AuthenticatedDashboardRoute: AuthenticatedDashboardRoute,
+  AuthenticatedInterviewsRoute: AuthenticatedInterviewsRoute,
+  AuthenticatedOffersRoute: AuthenticatedOffersRoute,
+  AuthenticatedOnboardingRoute: AuthenticatedOnboardingRoute,
+  AuthenticatedReportsRoute: AuthenticatedReportsRoute,
+  AuthenticatedSettingsRoute: AuthenticatedSettingsRoute,
+  AuthenticatedUsersRoute: AuthenticatedUsersRoute,
   AuthenticatedVendorRankingRoute: AuthenticatedVendorRankingRoute,
   AuthenticatedRequirementsIdRoute: AuthenticatedRequirementsIdRoute,
   AuthenticatedRequirementsNewRoute: AuthenticatedRequirementsNewRoute,
