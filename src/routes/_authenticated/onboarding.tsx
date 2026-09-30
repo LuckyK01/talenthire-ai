@@ -41,7 +41,7 @@ function OnboardingPage() {
               <DataTable head={["Task", "Owner", "Due", "Status"]}>
                 {list.map((t) => (
                   <tr key={t.id}><Td><p>{t.task}</p><p className="text-xs text-muted-foreground">{t.description}</p></Td><Td>{t.owner}</Td><Td>{fmtDate(t.due_date)}</Td>
-                    <Td><Select value={t.status} onValueChange={(v) => run(() => api.updateOnboardingTask({ task: t, status: v, actor } as never), "Task updated")}><SelectTrigger className="w-36"><SelectValue><StatusBadge status={t.status} /></SelectValue></SelectTrigger><SelectContent>{ONBOARDING_STATES.map((s) => <SelectItem key={s} value={s}>{s}</SelectItem>)}</SelectContent></Select></Td>
+                    <Td><Select value={t.status} onValueChange={(v) => run(() => api.updateOnboardingTask({ task: t, status: v, actor }), "Task updated")}><SelectTrigger className="w-36"><SelectValue><StatusBadge status={t.status} /></SelectValue></SelectTrigger><SelectContent>{ONBOARDING_STATES.map((s) => <SelectItem key={s} value={s}>{s}</SelectItem>)}</SelectContent></Select></Td>
                   </tr>
                 ))}
               </DataTable>
