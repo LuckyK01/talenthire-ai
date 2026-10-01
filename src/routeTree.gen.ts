@@ -24,6 +24,13 @@ import { Route as AuthenticatedReportsRouteImport } from './routes/_authenticate
 import { Route as AuthenticatedSettingsRouteImport } from './routes/_authenticated/settings'
 import { Route as AuthenticatedUsersRouteImport } from './routes/_authenticated/users'
 import { Route as AuthenticatedVendorRankingRouteImport } from './routes/_authenticated/vendor-ranking'
+import { Route as AuthenticatedPortalIndexRouteImport } from './routes/_authenticated/portal.index'
+import { Route as AuthenticatedPortalApplicationRouteImport } from './routes/_authenticated/portal.application'
+import { Route as AuthenticatedPortalInterviewRouteImport } from './routes/_authenticated/portal.interview'
+import { Route as AuthenticatedPortalNotificationsRouteImport } from './routes/_authenticated/portal.notifications'
+import { Route as AuthenticatedPortalOfferRouteImport } from './routes/_authenticated/portal.offer'
+import { Route as AuthenticatedPortalOnboardingRouteImport } from './routes/_authenticated/portal.onboarding'
+import { Route as AuthenticatedPortalProfileRouteImport } from './routes/_authenticated/portal.profile'
 import { Route as AuthenticatedRequirementsIndexRouteImport } from './routes/_authenticated/requirements.index'
 import { Route as AuthenticatedRequirementsIdRouteImport } from './routes/_authenticated/requirements.$id'
 import { Route as AuthenticatedRequirementsNewRouteImport } from './routes/_authenticated/requirements.new'
@@ -106,6 +113,48 @@ const AuthenticatedVendorRankingRoute =
     path: '/vendor-ranking',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
+const AuthenticatedPortalIndexRoute =
+  AuthenticatedPortalIndexRouteImport.update({
+    id: '/portal/',
+    path: '/portal/',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedPortalApplicationRoute =
+  AuthenticatedPortalApplicationRouteImport.update({
+    id: '/portal/application',
+    path: '/portal/application',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedPortalInterviewRoute =
+  AuthenticatedPortalInterviewRouteImport.update({
+    id: '/portal/interview',
+    path: '/portal/interview',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedPortalNotificationsRoute =
+  AuthenticatedPortalNotificationsRouteImport.update({
+    id: '/portal/notifications',
+    path: '/portal/notifications',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedPortalOfferRoute =
+  AuthenticatedPortalOfferRouteImport.update({
+    id: '/portal/offer',
+    path: '/portal/offer',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedPortalOnboardingRoute =
+  AuthenticatedPortalOnboardingRouteImport.update({
+    id: '/portal/onboarding',
+    path: '/portal/onboarding',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedPortalProfileRoute =
+  AuthenticatedPortalProfileRouteImport.update({
+    id: '/portal/profile',
+    path: '/portal/profile',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 const AuthenticatedRequirementsIndexRoute =
   AuthenticatedRequirementsIndexRouteImport.update({
     id: '/requirements/',
@@ -151,9 +200,16 @@ export interface FileRoutesByFullPath {
   '/settings': typeof AuthenticatedSettingsRoute
   '/users': typeof AuthenticatedUsersRoute
   '/vendor-ranking': typeof AuthenticatedVendorRankingRoute
+  '/portal/application': typeof AuthenticatedPortalApplicationRoute
+  '/portal/interview': typeof AuthenticatedPortalInterviewRoute
+  '/portal/notifications': typeof AuthenticatedPortalNotificationsRoute
+  '/portal/offer': typeof AuthenticatedPortalOfferRoute
+  '/portal/onboarding': typeof AuthenticatedPortalOnboardingRoute
+  '/portal/profile': typeof AuthenticatedPortalProfileRoute
   '/requirements/$id': typeof AuthenticatedRequirementsIdRoute
   '/requirements/new': typeof AuthenticatedRequirementsNewRoute
   '/vendors/$id': typeof AuthenticatedVendorsIdRoute
+  '/portal/': typeof AuthenticatedPortalIndexRoute
   '/requirements/': typeof AuthenticatedRequirementsIndexRoute
   '/vendors/': typeof AuthenticatedVendorsIndexRoute
 }
@@ -172,9 +228,16 @@ export interface FileRoutesByTo {
   '/settings': typeof AuthenticatedSettingsRoute
   '/users': typeof AuthenticatedUsersRoute
   '/vendor-ranking': typeof AuthenticatedVendorRankingRoute
+  '/portal/application': typeof AuthenticatedPortalApplicationRoute
+  '/portal/interview': typeof AuthenticatedPortalInterviewRoute
+  '/portal/notifications': typeof AuthenticatedPortalNotificationsRoute
+  '/portal/offer': typeof AuthenticatedPortalOfferRoute
+  '/portal/onboarding': typeof AuthenticatedPortalOnboardingRoute
+  '/portal/profile': typeof AuthenticatedPortalProfileRoute
   '/requirements/$id': typeof AuthenticatedRequirementsIdRoute
   '/requirements/new': typeof AuthenticatedRequirementsNewRoute
   '/vendors/$id': typeof AuthenticatedVendorsIdRoute
+  '/portal': typeof AuthenticatedPortalIndexRoute
   '/requirements': typeof AuthenticatedRequirementsIndexRoute
   '/vendors': typeof AuthenticatedVendorsIndexRoute
 }
@@ -195,9 +258,16 @@ export interface FileRoutesById {
   '/_authenticated/settings': typeof AuthenticatedSettingsRoute
   '/_authenticated/users': typeof AuthenticatedUsersRoute
   '/_authenticated/vendor-ranking': typeof AuthenticatedVendorRankingRoute
+  '/_authenticated/portal/application': typeof AuthenticatedPortalApplicationRoute
+  '/_authenticated/portal/interview': typeof AuthenticatedPortalInterviewRoute
+  '/_authenticated/portal/notifications': typeof AuthenticatedPortalNotificationsRoute
+  '/_authenticated/portal/offer': typeof AuthenticatedPortalOfferRoute
+  '/_authenticated/portal/onboarding': typeof AuthenticatedPortalOnboardingRoute
+  '/_authenticated/portal/profile': typeof AuthenticatedPortalProfileRoute
   '/_authenticated/requirements/$id': typeof AuthenticatedRequirementsIdRoute
   '/_authenticated/requirements/new': typeof AuthenticatedRequirementsNewRoute
   '/_authenticated/vendors/$id': typeof AuthenticatedVendorsIdRoute
+  '/_authenticated/portal/': typeof AuthenticatedPortalIndexRoute
   '/_authenticated/requirements/': typeof AuthenticatedRequirementsIndexRoute
   '/_authenticated/vendors/': typeof AuthenticatedVendorsIndexRoute
 }
@@ -218,9 +288,16 @@ export interface FileRouteTypes {
     | '/settings'
     | '/users'
     | '/vendor-ranking'
+    | '/portal/application'
+    | '/portal/interview'
+    | '/portal/notifications'
+    | '/portal/offer'
+    | '/portal/onboarding'
+    | '/portal/profile'
     | '/requirements/$id'
     | '/requirements/new'
     | '/vendors/$id'
+    | '/portal/'
     | '/requirements/'
     | '/vendors/'
   fileRoutesByTo: FileRoutesByTo
@@ -239,9 +316,16 @@ export interface FileRouteTypes {
     | '/settings'
     | '/users'
     | '/vendor-ranking'
+    | '/portal/application'
+    | '/portal/interview'
+    | '/portal/notifications'
+    | '/portal/offer'
+    | '/portal/onboarding'
+    | '/portal/profile'
     | '/requirements/$id'
     | '/requirements/new'
     | '/vendors/$id'
+    | '/portal'
     | '/requirements'
     | '/vendors'
   id:
@@ -261,9 +345,16 @@ export interface FileRouteTypes {
     | '/_authenticated/settings'
     | '/_authenticated/users'
     | '/_authenticated/vendor-ranking'
+    | '/_authenticated/portal/application'
+    | '/_authenticated/portal/interview'
+    | '/_authenticated/portal/notifications'
+    | '/_authenticated/portal/offer'
+    | '/_authenticated/portal/onboarding'
+    | '/_authenticated/portal/profile'
     | '/_authenticated/requirements/$id'
     | '/_authenticated/requirements/new'
     | '/_authenticated/vendors/$id'
+    | '/_authenticated/portal/'
     | '/_authenticated/requirements/'
     | '/_authenticated/vendors/'
   fileRoutesById: FileRoutesById
@@ -381,6 +472,55 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedVendorRankingRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/portal/': {
+      id: '/_authenticated/portal/'
+      path: '/portal'
+      fullPath: '/portal/'
+      preLoaderRoute: typeof AuthenticatedPortalIndexRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/portal/application': {
+      id: '/_authenticated/portal/application'
+      path: '/portal/application'
+      fullPath: '/portal/application'
+      preLoaderRoute: typeof AuthenticatedPortalApplicationRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/portal/interview': {
+      id: '/_authenticated/portal/interview'
+      path: '/portal/interview'
+      fullPath: '/portal/interview'
+      preLoaderRoute: typeof AuthenticatedPortalInterviewRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/portal/notifications': {
+      id: '/_authenticated/portal/notifications'
+      path: '/portal/notifications'
+      fullPath: '/portal/notifications'
+      preLoaderRoute: typeof AuthenticatedPortalNotificationsRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/portal/offer': {
+      id: '/_authenticated/portal/offer'
+      path: '/portal/offer'
+      fullPath: '/portal/offer'
+      preLoaderRoute: typeof AuthenticatedPortalOfferRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/portal/onboarding': {
+      id: '/_authenticated/portal/onboarding'
+      path: '/portal/onboarding'
+      fullPath: '/portal/onboarding'
+      preLoaderRoute: typeof AuthenticatedPortalOnboardingRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/portal/profile': {
+      id: '/_authenticated/portal/profile'
+      path: '/portal/profile'
+      fullPath: '/portal/profile'
+      preLoaderRoute: typeof AuthenticatedPortalProfileRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/requirements/': {
       id: '/_authenticated/requirements/'
       path: '/requirements'
@@ -432,9 +572,16 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedSettingsRoute: typeof AuthenticatedSettingsRoute
   AuthenticatedUsersRoute: typeof AuthenticatedUsersRoute
   AuthenticatedVendorRankingRoute: typeof AuthenticatedVendorRankingRoute
+  AuthenticatedPortalApplicationRoute: typeof AuthenticatedPortalApplicationRoute
+  AuthenticatedPortalInterviewRoute: typeof AuthenticatedPortalInterviewRoute
+  AuthenticatedPortalNotificationsRoute: typeof AuthenticatedPortalNotificationsRoute
+  AuthenticatedPortalOfferRoute: typeof AuthenticatedPortalOfferRoute
+  AuthenticatedPortalOnboardingRoute: typeof AuthenticatedPortalOnboardingRoute
+  AuthenticatedPortalProfileRoute: typeof AuthenticatedPortalProfileRoute
   AuthenticatedRequirementsIdRoute: typeof AuthenticatedRequirementsIdRoute
   AuthenticatedRequirementsNewRoute: typeof AuthenticatedRequirementsNewRoute
   AuthenticatedVendorsIdRoute: typeof AuthenticatedVendorsIdRoute
+  AuthenticatedPortalIndexRoute: typeof AuthenticatedPortalIndexRoute
   AuthenticatedRequirementsIndexRoute: typeof AuthenticatedRequirementsIndexRoute
   AuthenticatedVendorsIndexRoute: typeof AuthenticatedVendorsIndexRoute
 }
@@ -452,9 +599,16 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedSettingsRoute: AuthenticatedSettingsRoute,
   AuthenticatedUsersRoute: AuthenticatedUsersRoute,
   AuthenticatedVendorRankingRoute: AuthenticatedVendorRankingRoute,
+  AuthenticatedPortalApplicationRoute: AuthenticatedPortalApplicationRoute,
+  AuthenticatedPortalInterviewRoute: AuthenticatedPortalInterviewRoute,
+  AuthenticatedPortalNotificationsRoute: AuthenticatedPortalNotificationsRoute,
+  AuthenticatedPortalOfferRoute: AuthenticatedPortalOfferRoute,
+  AuthenticatedPortalOnboardingRoute: AuthenticatedPortalOnboardingRoute,
+  AuthenticatedPortalProfileRoute: AuthenticatedPortalProfileRoute,
   AuthenticatedRequirementsIdRoute: AuthenticatedRequirementsIdRoute,
   AuthenticatedRequirementsNewRoute: AuthenticatedRequirementsNewRoute,
   AuthenticatedVendorsIdRoute: AuthenticatedVendorsIdRoute,
+  AuthenticatedPortalIndexRoute: AuthenticatedPortalIndexRoute,
   AuthenticatedRequirementsIndexRoute: AuthenticatedRequirementsIndexRoute,
   AuthenticatedVendorsIndexRoute: AuthenticatedVendorsIndexRoute,
 }
