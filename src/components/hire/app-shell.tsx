@@ -203,7 +203,7 @@ function GlobalSearch() {
         <Search className="size-4" />
         <span className="hidden sm:inline">Search</span>
       </Button>
-      <CommandDialog open={open} onOpenChange={setOpen} title="Search HireFlow">
+      <CommandDialog open={open} onOpenChange={setOpen}>
         <CommandInput placeholder="Search requirements, candidates, vendors…" />
         <CommandList>
           <CommandEmpty>No matches found.</CommandEmpty>

@@ -54,7 +54,7 @@ function VendorsIndexPage() {
     for (const v of vendorInputs.data ?? []) {
       const counts: Record<string, number> = { UP: 0, DOWN: 0, FLAT: 0 };
       for (const s of v.skillScores) counts[s.trend] = (counts[s.trend] ?? 0) + 1;
-      const trend = counts.UP > counts.DOWN ? "UP" : counts.DOWN > counts.UP ? "DOWN" : "FLAT";
+      const up = counts["UP"] ?? 0, down = counts["DOWN"] ?? 0; const trend = up > down ? "UP" : down > up ? "DOWN" : "FLAT";
       map.set(v.id, trend);
     }
     return map;

@@ -220,10 +220,10 @@ export function AiRecommendationCard({
   className,
 }: {
   recommendation: string;
-  score?: number;
+  score?: number | undefined;
   explanation: string;
   factors?: { label: string; value: string }[];
-  confidence?: number;
+  confidence?: number | undefined;
   approvalState?: string;
   className?: string;
 }) {
