@@ -2,6 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
 
+import { AiAssist } from "@/components/hire/ai-assist";
 import { AppShell } from "@/components/hire/app-shell";
 import { AiRecommendationCard, HumanBadge, LoadingRows, PageHeader, Panel, ScoreBadge, StatusBadge } from "@/components/hire/bits";
 import { DataTable, Td } from "@/components/hire/table";
@@ -98,6 +99,7 @@ function CandidatesPage() {
               ]}
             />
           ) : <p className="text-sm">Not screened yet.</p>}
+          {cur?.c && role !== "CANDIDATE" && <AiAssist key={cur.c.id} task="candidate" label="AI screening brief" context={{ candidate: cur.c, requirement: cur.r, scores: cur.s }} />}
           {isHr && cur?.c && cur.r && (
             <Button size="sm" variant="outline" onClick={() => run(() => api.runScreening({ candidate: cur.c!, requirement: cur.r!, actor }), "AI screening complete")}>Run AI screening (simulated)</Button>
           )}

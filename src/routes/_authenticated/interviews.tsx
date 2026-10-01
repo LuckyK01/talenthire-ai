@@ -2,6 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
 
+import { AiAssist } from "@/components/hire/ai-assist";
 import { AppShell } from "@/components/hire/app-shell";
 import { AiRecommendationCard, fmtDateTime, LoadingRows, PageHeader, Panel, StatusBadge } from "@/components/hire/bits";
 import { DataTable, Td } from "@/components/hire/table";
@@ -70,6 +71,7 @@ function InterviewsPage() {
                 { label: "Technical", value: curFb.technical_capability }, { label: "Communication", value: curFb.communication },
                 { label: "Problem solving", value: curFb.problem_solving }, { label: "Interviewer says", value: curFb.overall_recommendation },
               ]} />
+              <AiAssist className="mt-3" task="feedback" label="AI feedback summary" context={{ round: cur?.round, feedback: curFb }} />
               {role === "HR_ADMIN" && cur && (() => {
                 const app = apps.data?.find((a) => a.id === cur.application_id);
                 const cand = cands.data?.find((c) => c.id === cur.candidate_id);

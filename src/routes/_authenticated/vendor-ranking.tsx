@@ -16,7 +16,7 @@ import { aiSettingsQuery, requirementsQuery, vendorInputsQuery } from "@/lib/que
 import { rankVendors, recommendationLabel, sortOptions, sortVendors, type RankedVendor, type SortKey } from "@/lib/services/vendorRanking";
 
 export const Route = createFileRoute("/_authenticated/vendor-ranking")({
-  validateSearch: (s: Record<string, unknown>): { req?: string } => (typeof s.req === "string" ? { req: s.req } : {}),
+  validateSearch: (s: Record<string, unknown>): { req?: string } => (typeof s["req"] === "string" ? { req: s["req"] } : {}),
   head: () => ({
     meta: [
       { title: "Vendor Ranking — HireFlow AI" },

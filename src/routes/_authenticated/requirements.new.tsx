@@ -251,7 +251,7 @@ function NewRequirementPage() {
             ) : (
               <div className="space-y-3">
                 <Select
-                  value={draft.hiring_manager_name || undefined}
+                  value={draft.hiring_manager_name ?? ""}
                   onValueChange={(v) => {
                     update("hiring_manager_name", v);
                     setManagerFreeText("");

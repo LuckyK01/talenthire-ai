@@ -1,6 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 
+import { AiAssist } from "@/components/hire/ai-assist";
 import { AppShell } from "@/components/hire/app-shell";
 import { AiRecommendationCard, EmptyState, fmtDate, LoadingRows, PageHeader, Panel, SectionTitle, StatusBadge } from "@/components/hire/bits";
 import { DataTable, Td } from "@/components/hire/table";
@@ -67,6 +68,7 @@ function RequirementDetail() {
             {r.preferred_skills.map((s) => <span key={s} className="rounded-full border border-dashed px-2 py-0.5 text-xs text-muted-foreground">{s} (preferred)</span>)}
           </div>
           <p className="mt-4 text-xs text-muted-foreground">Hiring manager: {r.hiring_manager_name ?? "—"} · Priority {r.priority} · Timeline {r.target_hiring_timeline ?? "—"}</p>
+          <AiAssist className="mt-4" task="jd" label="Draft job description" context={{ title: r.position_title, department: r.department, location: r.location, work_mode: r.work_mode, experience: r.experience_level, required: r.required_skills, preferred: r.preferred_skills }} />
         </Panel>
         <Panel>
           <SectionTitle hint="Mock AI — simulated">Contract validation</SectionTitle>
@@ -77,6 +79,7 @@ function RequirementDetail() {
             explanation={r.contract_status === "FLAGGED" ? "Simulated AI found issues in the contract. A human must approve, reject or request correction." : "No blocking issues found by the simulated check."}
             factors={findings.map((f, i) => ({ label: f.label ?? `Finding ${i + 1}`, value: f.value ?? f.issue ?? "" }))}
           />
+          <AiAssist className="mt-3" task="contract" label="Run AI contract review" context={{ requirement: r.position_title, contract: r.contract_document, findings }} />
           {isHr && (
             <div className="mt-3 flex flex-wrap gap-2">
               <Button size="sm" onClick={() => run(() => api.setContractDecision(r, "APPROVED", actor), "Contract approved")}>Approve</Button>
