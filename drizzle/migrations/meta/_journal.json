@@ -22,6 +22,13 @@
       "when": 1790586090073,
       "tag": "0002_ensure_profile_function",
       "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1790927437504,
+      "tag": "0003_fix_ensure_profile_ambiguity",
+      "breakpoints": true
     }
   ]
 }
