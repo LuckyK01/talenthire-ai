@@ -1,0 +1,428 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      name="description"
+      content="An interactive architecture and hiring workflow map for the HireFlow AI repository."
+    />
+    <title>HireFlow AI | Repository Flow Map</title>
+    <style>
+      :root {
+        color-scheme: light;
+        --ink: #18221f;
+        --muted: #69736f;
+        --paper: #f4f3ec;
+        --white: #fffefa;
+        --line: #d9ddd5;
+        --green: #176c54;
+        --green-soft: #e1eee7;
+        --coral: #d76a4b;
+        --coral-soft: #f8e8df;
+        --blue: #447c91;
+        --blue-soft: #e5eff1;
+        --yellow: #e5bd5c;
+        --yellow-soft: #f7f0d9;
+        --mono: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+        --serif: "Iowan Old Style", "Palatino Linotype", "Book Antiqua", Georgia, serif;
+        --sans: "Avenir Next", Avenir, "Segoe UI", sans-serif;
+        --shadow: 0 18px 50px rgb(36 48 41 / 8%);
+      }
+
+      * { box-sizing: border-box; }
+      body {
+        margin: 0;
+        color: var(--ink);
+        background-color: var(--paper);
+        background-image: radial-gradient(#9caa9f55 0.65px, transparent 0.65px);
+        background-size: 14px 14px;
+        font-family: var(--sans);
+      }
+      button { color: inherit; font: inherit; }
+      .page { width: min(1220px, calc(100% - 48px)); margin: 0 auto; padding: 36px 0 64px; }
+      .topline { display: flex; align-items: center; justify-content: space-between; gap: 20px; margin-bottom: 44px; }
+      .brand { display: flex; align-items: center; gap: 12px; font-weight: 750; letter-spacing: 0; }
+      .brand-mark {
+        display: grid;
+        width: 36px;
+        height: 36px;
+        place-items: center;
+        border-radius: 11px;
+        color: var(--white);
+        background: var(--green);
+        font-family: var(--serif);
+        font-size: 22px;
+      }
+      .brand small, .eyebrow, .mono, .source, .stage-index, .lane-label { font-family: var(--mono); }
+      .brand small { display: block; margin-top: 3px; color: var(--muted); font-size: 10px; font-weight: 500; }
+      .top-actions { display: flex; align-items: center; gap: 10px; }
+      .repo-tag, .print-button {
+        border: 1px solid var(--line);
+        border-radius: 999px;
+        background: rgb(255 254 250 / 75%);
+        padding: 9px 13px;
+        font-size: 12px;
+      }
+      .repo-tag { color: var(--muted); }
+      .print-button { cursor: pointer; font-weight: 700; }
+      .print-button:hover { border-color: var(--green); }
+      .hero { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: end; gap: 24px; margin-bottom: 28px; }
+      .eyebrow { margin: 0 0 12px; color: var(--green); font-size: 11px; letter-spacing: 0; text-transform: uppercase; }
+      h1 { max-width: 760px; margin: 0; font-family: var(--serif); font-size: clamp(42px, 6vw, 72px); font-weight: 500; line-height: 0.98; letter-spacing: 0; }
+      .hero-copy { max-width: 620px; margin: 16px 0 0; color: var(--muted); font-size: 15px; line-height: 1.65; }
+      .hero-note { max-width: 210px; padding: 13px 15px; border-left: 3px solid var(--coral); color: #754332; background: var(--coral-soft); font-family: var(--serif); font-size: 16px; line-height: 1.3; transform: rotate(1deg); }
+      .toolbar { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin: 34px 0 14px; }
+      .tabs { display: flex; flex-wrap: wrap; gap: 5px; padding: 5px; border: 1px solid var(--line); border-radius: 999px; background: #eaece5; }
+      .tab { border: 0; border-radius: 999px; background: transparent; padding: 10px 16px; color: var(--muted); cursor: pointer; font-size: 13px; font-weight: 650; transition: background 160ms ease, color 160ms ease, transform 160ms ease; }
+      .tab:hover { color: var(--ink); transform: translateY(-1px); }
+      .tab[aria-selected="true"] { color: white; background: var(--ink); }
+      .toolbar-caption { color: var(--muted); font-family: var(--mono); font-size: 10px; text-align: right; }
+      .view { display: none; animation: arrive 260ms ease both; }
+      .view.active { display: block; }
+      @keyframes arrive { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+      .sheet { overflow: hidden; border: 1px solid #dfe2da; border-radius: 14px; background: var(--white); box-shadow: var(--shadow); }
+      .sheet-head { display: flex; justify-content: space-between; align-items: center; gap: 16px; padding: 19px 22px; border-bottom: 1px solid var(--line); }
+      .sheet-head h2 { margin: 0; font-family: var(--serif); font-size: 22px; font-weight: 500; }
+      .sheet-head p { margin: 5px 0 0; color: var(--muted); font-size: 12px; }
+      .sheet-count { color: var(--muted); font-family: var(--mono); font-size: 10px; white-space: nowrap; }
+      .workflow { padding: 26px 22px 22px; }
+      .flow-row { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 0; }
+      .stage-wrap { position: relative; min-width: 0; padding: 0 12px 18px 0; }
+      .stage-wrap:not(:nth-child(5n))::after { position: absolute; top: 22px; right: -7px; width: 25px; height: 1px; background: #aab5ad; content: ""; }
+      .stage {
+        position: relative;
+        display: block;
+        width: 100%;
+        min-height: 132px;
+        padding: 13px 12px;
+        border: 1px solid var(--line);
+        border-radius: 9px;
+        background: #fff;
+        cursor: pointer;
+        text-align: left;
+        transition: border-color 160ms ease, transform 160ms ease, box-shadow 160ms ease;
+      }
+      .stage:hover, .stage[aria-pressed="true"] { z-index: 1; border-color: var(--green); box-shadow: 0 8px 20px rgb(23 108 84 / 11%); transform: translateY(-2px); }
+      .stage-index { display: block; margin-bottom: 14px; color: var(--green); font-size: 10px; }
+      .stage strong { display: block; font-family: var(--serif); font-size: 17px; font-weight: 500; line-height: 1.15; }
+      .stage small { display: block; margin-top: 7px; color: var(--muted); font-size: 11px; line-height: 1.4; }
+      .stage.ai { background: var(--blue-soft); }
+      .stage.human { background: var(--yellow-soft); }
+      .stage.data { background: var(--green-soft); }
+      .stage-end { margin-top: 4px; padding-top: 17px; border-top: 1px solid var(--line); }
+      .stage-detail { display: grid; grid-template-columns: 190px minmax(0, 1fr); gap: 18px; align-items: start; margin-top: 14px; padding: 16px 18px; border-radius: 9px; background: #f0f3ed; }
+      .stage-detail .detail-kicker { color: var(--green); font-family: var(--mono); font-size: 10px; text-transform: uppercase; }
+      .stage-detail h3 { margin: 6px 0 0; font-family: var(--serif); font-size: 20px; font-weight: 500; }
+      .stage-detail p { margin: 0; color: #47534d; font-size: 13px; line-height: 1.6; }
+      .source { display: block; margin-top: 8px; color: #748079; font-size: 10px; }
+      .journey-bottom { display: grid; grid-template-columns: minmax(0, 1.4fr) minmax(230px, 0.6fr); gap: 14px; margin-top: 14px; }
+      .portal-band, .loop-callout { padding: 18px; border-radius: 10px; }
+      .portal-band { border: 1px solid #c8d8d7; background: var(--blue-soft); }
+      .loop-callout { color: #573e1e; background: var(--yellow-soft); }
+      .lane-label { margin: 0 0 12px; color: var(--muted); font-size: 10px; text-transform: uppercase; }
+      .portal-items { display: flex; flex-wrap: wrap; gap: 7px; }
+      .portal-items span { padding: 7px 10px; border: 1px solid #c8d8d7; border-radius: 6px; background: rgb(255 255 255 / 60%); font-size: 11px; }
+      .loop-callout strong { display: block; font-family: var(--serif); font-size: 19px; font-weight: 500; }
+      .loop-callout p { margin: 7px 0 0; font-size: 12px; line-height: 1.55; }
+      .legend { display: flex; flex-wrap: wrap; gap: 16px; padding: 0 22px 19px; color: var(--muted); font-size: 11px; }
+      .legend span { display: inline-flex; align-items: center; gap: 7px; }
+      .swatch { width: 9px; height: 9px; border-radius: 2px; background: var(--blue); }
+      .swatch.human { background: var(--yellow); }
+      .swatch.data { background: var(--green); }
+      .architecture { padding: 24px 22px 22px; }
+      .arch-line { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 22px; align-items: stretch; }
+      .arch-node { position: relative; min-height: 144px; padding: 17px; border: 1px solid var(--line); border-radius: 9px; background: white; }
+      .arch-node:not(:last-child)::after { position: absolute; top: 50%; left: calc(100% + 1px); width: 22px; height: 1px; background: #93a198; content: ""; }
+      .arch-node .node-type { display: block; margin-bottom: 17px; color: var(--green); font-family: var(--mono); font-size: 10px; text-transform: uppercase; }
+      .arch-node strong { display: block; font-family: var(--serif); font-size: 19px; font-weight: 500; }
+      .arch-node p { margin: 7px 0 0; color: var(--muted); font-size: 11px; line-height: 1.5; }
+      .arch-node.server { background: var(--coral-soft); }
+      .arch-node.data { background: var(--green-soft); }
+      .auth-branches { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 19px 0; padding: 14px; border: 1px dashed #c4ccc4; border-radius: 10px; }
+      .branch { padding: 14px; border-radius: 7px; background: #f6f6f0; }
+      .branch h3 { margin: 0 0 7px; font-family: var(--serif); font-size: 18px; font-weight: 500; }
+      .branch p { margin: 0; color: var(--muted); font-size: 12px; line-height: 1.6; }
+      .branch .route-list { display: block; margin-top: 8px; color: var(--green); font-family: var(--mono); font-size: 10px; line-height: 1.7; }
+      .ai-lane { display: grid; grid-template-columns: 1fr 25px 1fr 25px 1.2fr 25px 1fr; align-items: center; gap: 6px; margin-top: 19px; padding: 17px; border: 1px solid #d5e0e1; border-radius: 10px; background: #f0f6f5; }
+      .ai-lane h3 { grid-column: 1 / -1; margin: 0 0 8px; font-family: var(--serif); font-size: 19px; font-weight: 500; }
+      .ai-step { min-height: 78px; padding: 11px; border: 1px solid #d5e0e1; border-radius: 7px; background: white; }
+      .ai-step strong { display: block; font-size: 12px; }
+      .ai-step small { display: block; margin-top: 6px; color: var(--muted); font-size: 10px; line-height: 1.4; }
+      .arrow { color: var(--coral); font-family: var(--mono); font-size: 18px; text-align: center; }
+      .arch-foot { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin-top: 14px; }
+      .foot-item { padding: 12px 14px; border-top: 2px solid var(--line); }
+      .foot-item strong { display: block; font-size: 12px; }
+      .foot-item p { margin: 5px 0 0; color: var(--muted); font-size: 11px; line-height: 1.5; }
+      .loops { display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(250px, 0.85fr); gap: 15px; padding: 22px; }
+      .loop-track { padding: 18px; border: 1px solid var(--line); border-radius: 10px; }
+      .loop-track h3 { margin: 0 0 15px; font-family: var(--serif); font-size: 22px; font-weight: 500; }
+      .loop-steps { display: grid; gap: 8px; }
+      .loop-step { display: grid; grid-template-columns: 28px 1fr auto; align-items: center; gap: 10px; padding: 11px 12px; border-radius: 7px; background: #f2f4ef; }
+      .loop-step .num { display: grid; width: 25px; height: 25px; place-items: center; border-radius: 50%; color: white; background: var(--green); font-family: var(--mono); font-size: 10px; }
+      .loop-step strong { font-size: 12px; }
+      .loop-step small { color: var(--muted); font-size: 10px; text-align: right; }
+      .return-arrow { margin: 2px 0 2px 9px; padding-left: 28px; border-left: 1px dashed var(--coral); color: var(--coral); font-family: var(--mono); font-size: 10px; line-height: 1.5; }
+      .decision-panel { display: flex; flex-direction: column; justify-content: space-between; padding: 20px; border-radius: 10px; color: white; background: var(--ink); }
+      .decision-panel .eyebrow { color: #91cdb2; }
+      .decision-panel h3 { margin: 10px 0; font-family: var(--serif); font-size: 30px; font-weight: 500; line-height: 1.05; }
+      .decision-panel p { margin: 0; color: #d0d8d3; font-size: 12px; line-height: 1.65; }
+      .decision-list { display: grid; gap: 8px; margin-top: 19px; }
+      .decision-list span { padding: 9px 10px; border-left: 2px solid var(--yellow); background: #26342e; font-size: 11px; }
+      .footer { display: flex; justify-content: space-between; gap: 18px; margin-top: 20px; color: var(--muted); font-size: 11px; line-height: 1.6; }
+      .footer .mono { font-size: 10px; text-align: right; }
+      @media (max-width: 800px) {
+        .page { width: min(100% - 28px, 650px); padding-top: 22px; }
+        .topline { margin-bottom: 34px; }
+        .hero { grid-template-columns: 1fr; }
+        .hero-note { max-width: none; }
+        .toolbar { align-items: flex-start; flex-direction: column; }
+        .toolbar-caption { text-align: left; }
+        .flow-row { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+        .stage-wrap { padding: 0; }
+        .stage-wrap::after { display: none; }
+        .stage { min-height: 122px; }
+        .stage-detail { grid-template-columns: 1fr; gap: 9px; }
+        .journey-bottom, .loops { grid-template-columns: 1fr; }
+        .arch-line { grid-template-columns: 1fr; gap: 9px; }
+        .arch-node { min-height: 0; }
+        .arch-node .node-type { margin-bottom: 8px; }
+        .arch-node:not(:last-child)::after { top: calc(100% + 1px); left: 50%; width: 1px; height: 9px; }
+        .auth-branches { grid-template-columns: 1fr; }
+        .ai-lane { grid-template-columns: 1fr; }
+        .ai-lane h3 { grid-column: auto; }
+        .ai-lane .arrow { transform: rotate(90deg); }
+        .arch-foot { grid-template-columns: 1fr; }
+        .footer { flex-direction: column; }
+        .footer .mono { text-align: left; }
+      }
+      @media (max-width: 430px) {
+        .page { width: calc(100% - 20px); }
+        .repo-tag { display: none; }
+        h1 { font-size: 43px; }
+        .tabs { width: 100%; border-radius: 10px; }
+        .tab { flex: 1; padding: 10px 8px; font-size: 11px; }
+        .sheet-head, .workflow, .architecture, .loops { padding-right: 14px; padding-left: 14px; }
+        .sheet-count { display: none; }
+        .stage { min-height: 136px; padding: 11px 10px; }
+        .stage strong { font-size: 15px; }
+        .loop-step { grid-template-columns: 28px 1fr; }
+        .loop-step small { grid-column: 2; text-align: left; }
+      }
+      @media print {
+        body { background: white; }
+        .page { width: 100%; padding: 0; }
+        .topline { margin-bottom: 20px; }
+        .top-actions, .toolbar, .footer { display: none; }
+        .view { display: block !important; margin-bottom: 18px; break-inside: avoid; }
+        .sheet { box-shadow: none; }
+        .stage { min-height: 115px; }
+        .stage-detail { display: none; }
+        .hero h1 { font-size: 44px; }
+      }
+      @media (prefers-reduced-motion: reduce) {
+        *, *::before, *::after { scroll-behavior: auto !important; animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+      }
+    </style>
+  </head>
+  <body>
+    <main class="page">
+      <header class="topline">
+        <div class="brand">
+          <span class="brand-mark" aria-hidden="true">H</span>
+          <span>HireFlow AI<small>REPOSITORY FLOW MAP</small></span>
+        </div>
+        <div class="top-actions">
+          <span class="repo-tag">TanStack Start / React / Supabase</span>
+          <button class="print-button" type="button" onclick="window.print()">Print map</button>
+        </div>
+      </header>
+
+      <section class="hero" aria-labelledby="page-title">
+        <div>
+          <p class="eyebrow">System map / 01</p>
+          <h1 id="page-title">From request<br />to first day.</h1>
+          <p class="hero-copy">A field guide to how HireFlow AI routes people, moves hiring work, and keeps recommendations separate from decisions. Switch views to follow the product journey, runtime, or feedback loops.</p>
+        </div>
+        <aside class="hero-note">AI recommends.<br />Humans decide.</aside>
+      </section>
+
+      <div class="toolbar">
+        <div class="tabs" role="tablist" aria-label="Flow map views">
+          <button class="tab" id="tab-journey" type="button" role="tab" aria-selected="true" aria-controls="view-journey">Hiring journey</button>
+          <button class="tab" id="tab-architecture" type="button" role="tab" aria-selected="false" aria-controls="view-architecture">App architecture</button>
+          <button class="tab" id="tab-decisions" type="button" role="tab" aria-selected="false" aria-controls="view-decisions">Decision loops</button>
+        </div>
+        <span class="toolbar-caption">SELECT A VIEW / CLICK A STAGE FOR CODE NOTES</span>
+      </div>
+
+      <section class="view active" id="view-journey" role="tabpanel" aria-labelledby="tab-journey">
+        <div class="sheet">
+          <div class="sheet-head">
+            <div><h2>The hiring journey</h2><p>Business flow across the recruiter workspace and candidate portal.</p></div>
+            <span class="sheet-count">01 — 10 / PRODUCT FLOW</span>
+          </div>
+          <div class="workflow">
+            <div class="flow-row" id="stage-grid" aria-label="Hiring workflow stages"></div>
+            <div class="stage-detail" aria-live="polite">
+              <div><span class="detail-kicker" id="detail-kicker">Stage 01 / Request</span><h3 id="detail-title">Define the need</h3></div>
+              <div><p id="detail-copy"></p><span class="source" id="detail-source"></span></div>
+            </div>
+            <div class="stage-end">
+              <p class="lane-label">Candidate-facing lane / role-scoped portal</p>
+              <div class="portal-band">
+                <div class="portal-items"><span>Application</span><span>Interview</span><span>Offer</span><span>Documents & onboarding</span><span>Notifications</span></div>
+              </div>
+            </div>
+            <div class="journey-bottom">
+              <div class="portal-band">
+                <p class="lane-label">Staff workspace / role-aware navigation</p>
+                <div class="portal-items"><span>Requirements</span><span>Vendors & ranking</span><span>Candidates</span><span>Interviews</span><span>Approvals</span><span>Offers</span><span>Onboarding</span><span>Audit trail</span></div>
+              </div>
+              <aside class="loop-callout"><strong>Performance feeds ranking</strong><p>Screening and hiring outcomes flow back into vendor performance history, improving future comparisons.</p></aside>
+            </div>
+          </div>
+          <div class="legend"><span><i class="swatch" aria-hidden="true"></i>AI-assisted</span><span><i class="swatch human" aria-hidden="true"></i>Human checkpoint</span><span><i class="swatch data" aria-hidden="true"></i>Data / workflow state</span></div>
+        </div>
+      </section>
+
+      <section class="view" id="view-architecture" role="tabpanel" aria-labelledby="tab-architecture" hidden>
+        <div class="sheet">
+          <div class="sheet-head">
+            <div><h2>How the app runs</h2><p>From a browser session to protected pages, data services, and server-side AI.</p></div>
+            <span class="sheet-count">02 — RUNTIME / DATA</span>
+          </div>
+          <div class="architecture">
+            <div class="arch-line" aria-label="Application runtime layers">
+              <article class="arch-node"><span class="node-type">01 / Client</span><strong>React UI</strong><p>TanStack Router pages, shared AppShell, forms and role-aware navigation.</p></article>
+              <article class="arch-node"><span class="node-type">02 / Routing</span><strong>TanStack Start</strong><p>Router context includes React Query; Start wires server functions and middleware.</p></article>
+              <article class="arch-node server"><span class="node-type">03 / Guard</span><strong>Session + role</strong><p>Supabase session, profile and user_roles. Protected route redirects signed-out users.</p></article>
+              <article class="arch-node"><span class="node-type">04 / Data access</span><strong>Query + API</strong><p>React Query reads through src/lib/api.ts; UI does not query tables directly.</p></article>
+              <article class="arch-node data"><span class="node-type">05 / Persistence</span><strong>Supabase / Postgres</strong><p>Relational hiring data. Row-level security limits candidates to their own records.</p></article>
+            </div>
+            <div class="auth-branches">
+              <article class="branch"><h3>Staff route</h3><p>HR/Admin and Manager share the staff workspace. Navigation is selected from the role.</p><span class="route-list">/dashboard · /requirements · /candidates · /interviews · /approvals<br />HR/Admin also: /vendors · /vendor-ranking · /offers · /onboarding · /audit</span></article>
+              <article class="branch"><h3>Candidate route</h3><p>Candidates land in the portal; portal data is filtered to the signed-in candidate as an additional client-side guard.</p><span class="route-list">/portal · /portal/application · /portal/interview<br />/portal/offer · /portal/onboarding · /portal/profile</span></article>
+            </div>
+            <div class="ai-lane" aria-label="Protected AI assistance flow">
+              <h3>Protected AI assistance / staff only</h3>
+              <div class="ai-step"><strong>AiAssist UI</strong><small>Task + bounded context</small></div><span class="arrow" aria-hidden="true">→</span>
+              <div class="ai-step"><strong>aiAssist server function</strong><small>requireSupabaseAuth + schema validation</small></div><span class="arrow" aria-hidden="true">→</span>
+              <div class="ai-step"><strong>Role check + AI gateway</strong><small>Candidates denied; server key stays server-side</small></div><span class="arrow" aria-hidden="true">→</span>
+              <div class="ai-step"><strong>Advisory result</strong><small>Recommendation returned to staff; human decides</small></div>
+            </div>
+            <div class="arch-foot">
+              <div class="foot-item"><strong>Auth attachment</strong><p>Client middleware attaches the Supabase bearer token to server-function requests.</p></div>
+              <div class="foot-item"><strong>Request protection</strong><p>Start installs auth middleware; CSRF middleware filters server-function requests.</p></div>
+              <div class="foot-item"><strong>Errors & audit</strong><p>Server errors are normalized to an HTML error page; explicit workflow actions can be recorded in audit_events.</p></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="view" id="view-decisions" role="tabpanel" aria-labelledby="tab-decisions" hidden>
+        <div class="sheet">
+          <div class="sheet-head">
+            <div><h2>Recommendations are not decisions</h2><p>Two explainable scoring loops support the team; accountable actions stay with people.</p></div>
+            <span class="sheet-count">03 — FEEDBACK / CONTROL</span>
+          </div>
+          <div class="loops">
+            <section class="loop-track" aria-labelledby="vendor-loop-title">
+              <p class="eyebrow">Core differentiator / vendor intelligence</p>
+              <h3 id="vendor-loop-title">The vendor feedback loop</h3>
+              <div class="loop-steps">
+                <div class="loop-step"><span class="num">1</span><strong>Requirement defines skills & location</strong><small>Requirements</small></div>
+                <div class="loop-step"><span class="num">2</span><strong>Vendors are scored and ranked</strong><small>Pure service</small></div>
+                <div class="loop-step"><span class="num">3</span><strong>Staff reviews fit and selects vendors</strong><small>Human action</small></div>
+                <div class="loop-step"><span class="num">4</span><strong>Submissions are deterministically screened</strong><small>CandidateScreeningService</small></div>
+                <div class="loop-step"><span class="num">5</span><strong>Shortlist, interview, offer & hire outcomes</strong><small>Workflow records</small></div>
+                <div class="return-arrow">↶ Candidate quality and conversion outcomes update vendor performance / history, then feed the next ranking.</div>
+              </div>
+            </section>
+            <aside class="decision-panel">
+              <div>
+                <p class="eyebrow">Decision boundary</p>
+                <h3>People own the call.</h3>
+                <p>Scores expose evidence; the AI assistant can draft a screening brief, contract review, feedback summary or job description. It must not make final hiring, rejection, compensation or offer decisions.</p>
+              </div>
+              <div class="decision-list"><span>Vendor selection: HR / Admin</span><span>Shortlist and rejection: human review</span><span>Interview feedback: panel input</span><span>Offer and approvals: authorized staff</span></div>
+            </aside>
+          </div>
+          <div class="legend"><span><i class="swatch data" aria-hidden="true"></i>Deterministic scoring service</span><span><i class="swatch" aria-hidden="true"></i>AI-generated advisory text</span><span><i class="swatch human" aria-hidden="true"></i>Human decision / approval</span></div>
+        </div>
+      </section>
+
+      <footer class="footer">
+        <span>Repository map based on the current routes, auth flow, data layer, and service modules. The hiring journey describes the product workflow, not a claim that every stage is fully automated.</span>
+        <span class="mono">KEY FILES: src/router.tsx · src/start.ts · src/hooks/useAuth.tsx · src/lib/api.ts · src/lib/ai.functions.ts</span>
+      </footer>
+    </main>
+    <script>
+      const stages = [
+        { title: "Request", short: "Define the need", kind: "data", copy: "A manager or HR user captures the role, skill requirements, location, priority and hiring context. The requirement becomes the anchor for vendor matching and screening.", source: "Routes: /requirements · Data: requirements" },
+        { title: "Contract validation", short: "Review terms", kind: "ai", copy: "Contract review assistance can identify missing or risky clauses and suggest fixes. The output is advisory; a human reviews terms and owns approval.", source: "AI task: contract · Server: src/lib/ai.functions.ts" },
+        { title: "Vendor identification", short: "Find likely partners", kind: "data", copy: "Candidate vendors are compared against required skills, specializations, locations and stored performance evidence.", source: "Service: src/lib/services/vendorRanking.ts" },
+        { title: "Vendor ranking", short: "Explain the fit", kind: "data", copy: "A pure scoring service computes weighted fit, recency-aware performance, conversion rates, confidence and an explanation. Ranking is a recommendation, not an automatic selection.", source: "Route: /vendor-ranking · Service: VendorRankingService" },
+        { title: "Vendor selection", short: "Choose who sources", kind: "human", copy: "HR/Admin reviews the evidence, filters or compares vendors, and decides which partners should source candidates.", source: "Role boundary: HR/Admin workspace" },
+        { title: "Resume sourcing", short: "Receive profiles", kind: "data", copy: "Candidates are sourced against the requirement and associated with applications and vendor submissions for downstream review.", source: "Data concepts: sourcing_requests · candidates · applications" },
+        { title: "Profile screening", short: "Score against role", kind: "data", copy: "Candidate screening calculates skill, experience, location and education scores with an explanation and recommendation label. AI may add a written brief; the numerical score is deterministic.", source: "Service: src/lib/services/candidateScreening.ts" },
+        { title: "Recruiter review", short: "Human shortlisting", kind: "human", copy: "Recruiters examine score breakdowns and candidate evidence before shortlisting or rejecting. The application explicitly requires a human decision at this point.", source: "Routes: /candidates · Data: candidate_scores" },
+        { title: "Interview & feedback", short: "Collect panel input", kind: "human", copy: "Staff schedule interviews and collect panel feedback. AI can summarize feedback into strengths, concerns and a suggested next step for the panel.", source: "Routes: /interviews · Candidate portal: /portal/interview" },
+        { title: "Offer & onboarding", short: "Approve, then welcome", kind: "human", copy: "Authorized staff manage approvals and offers; after acceptance, onboarding tasks move the candidate into the employee journey. The candidate sees only their own portal records.", source: "Routes: /approvals · /offers · /onboarding · /portal/onboarding" },
+      ];
+
+      const stageGrid = document.getElementById("stage-grid");
+      const detailKicker = document.getElementById("detail-kicker");
+      const detailTitle = document.getElementById("detail-title");
+      const detailCopy = document.getElementById("detail-copy");
+      const detailSource = document.getElementById("detail-source");
+
+      function selectStage(index) {
+        const stage = stages[index];
+        document.querySelectorAll(".stage").forEach((button, buttonIndex) => {
+          button.setAttribute("aria-pressed", String(buttonIndex === index));
+        });
+        detailKicker.textContent = `Stage ${String(index + 1).padStart(2, "0")} / ${stage.title}`;
+        detailTitle.textContent = stage.short;
+        detailCopy.textContent = stage.copy;
+        detailSource.textContent = stage.source;
+      }
+
+      stages.forEach((stage, index) => {
+        const wrap = document.createElement("div");
+        wrap.className = "stage-wrap";
+        const button = document.createElement("button");
+        button.type = "button";
+        button.className = `stage ${stage.kind}`;
+        button.setAttribute("aria-pressed", String(index === 0));
+        button.innerHTML = `<span class="stage-index">STAGE ${String(index + 1).padStart(2, "0")}</span><strong>${stage.title}</strong><small>${stage.short}</small>`;
+        button.addEventListener("click", () => selectStage(index));
+        wrap.append(button);
+        stageGrid.append(wrap);
+      });
+      selectStage(0);
+
+      const tabs = [...document.querySelectorAll('[role="tab"]')];
+      const views = [...document.querySelectorAll('[role="tabpanel"]')];
+      function activateTab(tab) {
+        tabs.forEach((item) => item.setAttribute("aria-selected", String(item === tab)));
+        views.forEach((view) => {
+          const active = view.id === tab.getAttribute("aria-controls");
+          view.classList.toggle("active", active);
+          view.hidden = !active;
+        });
+      }
+      tabs.forEach((tab, index) => {
+        tab.addEventListener("click", () => activateTab(tab));
+        tab.addEventListener("keydown", (event) => {
+          if (event.key !== "ArrowRight" && event.key !== "ArrowLeft") return;
+          event.preventDefault();
+          const step = event.key === "ArrowRight" ? 1 : -1;
+          const next = tabs[(index + step + tabs.length) % tabs.length];
+          activateTab(next);
+          next.focus();
+        });
+      });
+    </script>
+  </body>
+</html>

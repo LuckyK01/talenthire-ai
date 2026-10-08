@@ -1,0 +1,194 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      name="description"
+      content="Architecture and request flow for HireFlow AI assistance."
+    />
+    <title>HireFlow AI | AI System Architecture</title>
+    <style>
+      :root {
+        color-scheme: light;
+        --ink: #18221f;
+        --muted: #69736f;
+        --paper: #f4f3ec;
+        --white: #fffefa;
+        --line: #d9ddd5;
+        --green: #176c54;
+        --green-soft: #e1eee7;
+        --coral: #d76a4b;
+        --coral-soft: #f8e8df;
+        --blue: #447c91;
+        --blue-soft: #e5eff1;
+        --yellow: #e5bd5c;
+        --yellow-soft: #f7f0d9;
+        --mono: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+        --serif: "Iowan Old Style", "Palatino Linotype", "Book Antiqua", Georgia, serif;
+        --sans: "Avenir Next", Avenir, "Segoe UI", sans-serif;
+      }
+
+      * { box-sizing: border-box; }
+      body {
+        margin: 0;
+        color: var(--ink);
+        background-color: var(--paper);
+        background-image: radial-gradient(#9caa9f55 0.65px, transparent 0.65px);
+        background-size: 14px 14px;
+        font-family: var(--sans);
+      }
+      button { color: inherit; font: inherit; }
+      .page { width: min(1120px, calc(100% - 44px)); margin: 0 auto; padding: 30px 0 56px; }
+      .topline { display: flex; align-items: center; justify-content: space-between; gap: 18px; margin-bottom: 52px; }
+      .brand { display: flex; align-items: center; gap: 11px; font-weight: 750; }
+      .brand-mark { display: grid; width: 36px; height: 36px; place-items: center; border-radius: 10px; color: white; background: var(--green); font-family: var(--serif); font-size: 22px; }
+      .brand small { display: block; margin-top: 3px; color: var(--muted); font-family: var(--mono); font-size: 10px; font-weight: 500; }
+      .print-button { border: 1px solid var(--line); border-radius: 6px; padding: 9px 12px; background: var(--white); cursor: pointer; font-size: 12px; font-weight: 700; }
+      .print-button:hover { border-color: var(--green); }
+      .hero { display: grid; grid-template-columns: minmax(0, 1fr) 220px; align-items: end; gap: 28px; margin-bottom: 30px; }
+      .eyebrow, .mono, .stage-index, .section-kicker { font-family: var(--mono); }
+      .eyebrow { margin: 0 0 12px; color: var(--green); font-size: 11px; text-transform: uppercase; }
+      h1 { max-width: 740px; margin: 0; font-family: var(--serif); font-size: clamp(42px, 6vw, 68px); font-weight: 500; line-height: 1; }
+      .hero-copy { max-width: 690px; margin: 16px 0 0; color: var(--muted); font-size: 15px; line-height: 1.65; }
+      .hero-note { padding: 14px 16px; border-left: 3px solid var(--coral); color: #754332; background: var(--coral-soft); font-family: var(--serif); font-size: 16px; line-height: 1.4; }
+      .section-head { display: flex; justify-content: space-between; align-items: end; gap: 16px; padding: 18px 21px; border-bottom: 1px solid var(--line); }
+      .section-head h2 { margin: 0; font-family: var(--serif); font-size: 23px; font-weight: 500; }
+      .section-head p { margin: 5px 0 0; color: var(--muted); font-size: 12px; }
+      .section-kicker { color: var(--muted); font-size: 10px; white-space: nowrap; }
+      .sheet { overflow: hidden; margin-top: 16px; border: 1px solid #dfe2da; border-radius: 10px; background: var(--white); box-shadow: 0 16px 44px rgb(36 48 41 / 7%); }
+      .flowchart { display: grid; gap: 0; padding: 24px 20px 22px; }
+      .flow-node { width: min(650px, 100%); margin: 0 auto; padding: 14px 17px; border: 1px solid var(--line); border-radius: 8px; background: white; }
+      .flow-node strong { display: block; font-family: var(--serif); font-size: 18px; font-weight: 500; }
+      .flow-node p { margin: 5px 0 0; color: var(--muted); font-size: 11px; line-height: 1.5; }
+      .flow-node.ui { background: var(--blue-soft); }
+      .flow-node.server { background: var(--coral-soft); }
+      .flow-node.auth { background: var(--yellow-soft); }
+      .flow-node.model { background: var(--green-soft); }
+      .flow-arrow { display: grid; height: 30px; place-items: center; color: var(--coral); font-family: var(--mono); font-size: 18px; }
+      .decision { width: min(650px, 100%); margin: 0 auto; padding: 12px; border: 1px dashed #c9b878; border-radius: 8px; background: #fbf7e9; text-align: center; }
+      .decision strong { font-size: 12px; }
+      .branch-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; width: min(650px, 100%); margin: 12px auto 0; }
+      .branch { padding: 12px 14px; border: 1px solid var(--line); border-radius: 7px; background: white; }
+      .branch strong { display: block; font-size: 11px; }
+      .branch p { margin: 5px 0 0; color: var(--muted); font-size: 10px; line-height: 1.45; }
+      .branch.reject { border-color: #e4c5b8; background: var(--coral-soft); }
+      .branch.continue { border-color: #bfd7ca; background: var(--green-soft); }
+      .approved-arrow { display: grid; grid-column: 2; gap: 2px; justify-items: center; padding: 7px 0; color: var(--green); font-family: var(--mono); font-size: 10px; }
+      .approved-arrow span:last-child { font-size: 18px; }
+      .content-grid { display: grid; grid-template-columns: 1.15fr 0.85fr; gap: 16px; margin-top: 16px; }
+      .panel { overflow: hidden; border: 1px solid var(--line); border-radius: 10px; background: var(--white); }
+      .task-list { display: grid; }
+      .task { display: grid; grid-template-columns: 105px minmax(0, 1fr); gap: 13px; padding: 13px 19px; border-bottom: 1px solid #e9ebe5; }
+      .task:last-child { border-bottom: 0; }
+      .task code { color: var(--green); font-family: var(--mono); font-size: 11px; }
+      .task p { margin: 0; color: #47534d; font-size: 11px; line-height: 1.55; }
+      .behavior { padding: 18px 19px; }
+      .behavior h3 { margin: 0 0 10px; font-family: var(--serif); font-size: 19px; font-weight: 500; }
+      .behavior ul { display: grid; gap: 9px; margin: 0; padding-left: 17px; color: #47534d; font-size: 11px; line-height: 1.55; }
+      .behavior li::marker { color: var(--green); }
+      .notice { margin-top: 16px; padding: 16px 19px; border-left: 3px solid var(--coral); background: var(--coral-soft); }
+      .notice strong { display: block; color: #754332; font-size: 12px; }
+      .notice p { margin: 6px 0 0; color: #654b3e; font-size: 11px; line-height: 1.6; }
+      .footer { display: flex; justify-content: space-between; gap: 14px; margin-top: 18px; color: var(--muted); font-size: 10px; line-height: 1.6; }
+      .footer .mono { text-align: right; }
+      @media (max-width: 950px) {
+      }
+      @media (max-width: 700px) {
+        .page { width: min(100% - 28px, 560px); padding-top: 20px; }
+        .topline { margin-bottom: 34px; }
+        .hero { grid-template-columns: 1fr; gap: 16px; }
+        .hero-note { max-width: none; }
+        .flowchart { padding: 16px; }
+        .branch-row { grid-template-columns: 1fr; }
+        .approved-arrow { grid-column: 1; }
+        .content-grid { grid-template-columns: 1fr; }
+        .section-head { align-items: flex-start; flex-direction: column; }
+        .task { grid-template-columns: 82px minmax(0, 1fr); padding: 12px 15px; }
+        .footer { flex-direction: column; }
+        .footer .mono { text-align: left; }
+      }
+      @media print {
+        body { background: white; }
+        .page { width: 100%; padding: 0; }
+        .print-button { display: none; }
+        .sheet, .panel { box-shadow: none; break-inside: avoid; }
+      }
+    </style>
+  </head>
+  <body>
+    <main class="page">
+      <header class="topline">
+        <div class="brand"><span class="brand-mark">H</span><span>HireFlow AI<small>SYSTEM ARCHITECTURE</small></span></div>
+        <button class="print-button" type="button" onclick="window.print()">Print / Save PDF</button>
+      </header>
+
+      <section class="hero" aria-labelledby="title">
+        <div>
+          <p class="eyebrow">AI assistance · request lifecycle</p>
+          <h1 id="title">One guarded path from hiring screen to AI insight.</h1>
+          <p class="hero-copy">HireFlow keeps live model access behind a single server function. The browser sends task-specific hiring context; the server authenticates the caller, applies task instructions, and returns advisory text for a person to review.</p>
+        </div>
+        <aside class="hero-note">AI can summarize and draft. Hiring decisions stay with people.</aside>
+      </section>
+
+      <section class="sheet" aria-labelledby="architecture-heading">
+        <div class="section-head">
+          <div><h2 id="architecture-heading">AI request flow</h2><p>From the hiring screen to an advisory result</p></div>
+          <span class="section-kicker">POST · SERVER-ONLY KEY</span>
+        </div>
+        <div class="flowchart" aria-label="AI request flow chart">
+          <article class="flow-node ui"><strong>Hiring screen + AiAssist</strong><p>Selects a task and sends relevant hiring context and an optional question.</p></article>
+          <div class="flow-arrow" aria-hidden="true">↓</div>
+          <article class="flow-node server"><strong>aiAssist server function</strong><p>Validates the request, applies task instructions, and keeps the AI key on the server.</p></article>
+          <div class="flow-arrow" aria-hidden="true">↓</div>
+          <article class="flow-node auth"><strong>Supabase authentication</strong><p>Verifies the caller's Bearer token and reads the authenticated user ID.</p></article>
+          <div class="flow-arrow" aria-hidden="true">↓</div>
+          <div class="decision"><strong>Does the user have the CANDIDATE role?</strong></div>
+          <div class="branch-row">
+            <article class="branch reject"><strong>YES · Stop</strong><p>Return an access-denied response. Do not call the model.</p></article>
+            <article class="branch continue"><strong>NO · Continue</strong><p>Build the task prompt and call the AI provider.</p></article>
+            <div class="approved-arrow"><span>APPROVED PATH</span><span aria-hidden="true">↓</span></div>
+          </div>
+          <article class="flow-node model"><strong>Lovable AI gateway → model</strong><p>Generate task-specific advisory text and return it to the component.</p></article>
+          <div class="flow-arrow" aria-hidden="true">↓</div>
+          <article class="flow-node ui"><strong>Result shown for human review</strong><p>AiAssist displays the text or an error; a person makes the final decision.</p></article>
+        </div>
+      </section>
+
+      <div class="content-grid">
+        <section class="panel" aria-labelledby="tasks-heading">
+          <div class="section-head"><div><h2 id="tasks-heading">Task modes</h2><p>Selected by the calling screen, not inferred by the model.</p></div><span class="section-kicker">5 MODES</span></div>
+          <div class="task-list">
+            <div class="task"><code>candidate</code><p>Screening brief: strengths, risks, targeted interview questions, and a recommendation label. Context includes candidate, requirement, and deterministic scores.</p></div>
+            <div class="task"><code>contract</code><p>Compliance review of contract text against the requirement, with clause severity and suggested fixes.</p></div>
+            <div class="task"><code>feedback</code><p>Interview feedback summary covering overall impression, strengths, concerns, and a suggested next step.</p></div>
+            <div class="task"><code>jd</code><p>Inclusive job description draft with role, responsibilities, must-have skills, and nice-to-have sections.</p></div>
+            <div class="task"><code>ask</code><p>Concise, practical answers based on the hiring data supplied by the AI control center.</p></div>
+          </div>
+        </section>
+
+        <section class="panel" aria-labelledby="behavior-heading">
+          <div class="section-head"><div><h2 id="behavior-heading">Runtime behavior</h2><p>What the implementation does around the model call.</p></div></div>
+          <div class="behavior">
+            <h3>Prompt and output</h3>
+            <ul>
+              <li>Each task has its own system instruction; all share a rule that a human makes final hiring, rejection, compensation, and offer decisions.</li>
+              <li>Requests ask for short, plain text with simple dash bullets. The server awaits the completed text before returning it.</li>
+              <li>Provider options request low reasoning effort and set <code>store: false</code>.</li>
+              <li>The component keeps the result in local UI state and optionally notifies its <code>onResult</code> callback.</li>
+              <li>HTTP 429 and 402 receive specific messages; other model failures return a generic retry message.</li>
+            </ul>
+          </div>
+        </section>
+      </div>
+
+      <aside class="notice">
+        <strong>Authorization detail to verify</strong>
+        <p>The project note describes AI as staff-only, but this handler currently only denies a positive CANDIDATE role result; it does not require a positive staff role. It also does not explicitly stop if the <code>has_role</code> RPC returns an error. The AI key remains server-side, but the role gate should be confirmed against the intended access policy.</p>
+      </aside>
+
+      <footer class="footer"><span>Architecture reflects the current implementation, not an idealized target state.</span><span class="mono">src/components/hire/ai-assist.tsx · src/lib/ai.functions.ts · src/integrations/supabase/auth-middleware.ts</span></footer>
+    </main>
+  </body>
+</html>
