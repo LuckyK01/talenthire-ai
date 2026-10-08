@@ -41,6 +41,10 @@ function ErrorComponent({ error, reset }: import("@tanstack/react-router").Error
   console.error(error);
   const router = useRouter();
   useEffect(() => {
+    if (isChunkLoadError(error)) {
+      reloadOnceForNewVersion();
+      return;
+    }
     reportLovableError(error, { boundary: "tanstack_root_error_component" });
   }, [error]);
 
@@ -120,8 +124,40 @@ function RootShell({ children }: { children: ReactNode }) {
   );
 }
 
+const CHUNK_RELOAD_KEY = "hireflow-chunk-reload";
+
+function isChunkLoadError(err: unknown): boolean {
+  const msg = err instanceof Error ? err.message : String(err ?? "");
+  return /Failed to fetch dynamically imported module|Importing a module script failed|error loading dynamically imported module/i.test(msg);
+}
+
+function reloadOnceForNewVersion() {
+  if (typeof window === "undefined") return;
+  if (sessionStorage.getItem(CHUNK_RELOAD_KEY)) return;
+  sessionStorage.setItem(CHUNK_RELOAD_KEY, "1");
+  window.location.reload();
+}
+
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
+
+  useEffect(() => {
+    const onPreloadError = (e: Event) => {
+      e.preventDefault();
+      reloadOnceForNewVersion();
+    };
+    const onRejection = (e: PromiseRejectionEvent) => {
+      if (isChunkLoadError(e.reason)) reloadOnceForNewVersion();
+    };
+    window.addEventListener("vite:preloadError", onPreloadError);
+    window.addEventListener("unhandledrejection", onRejection);
+    const clear = window.setTimeout(() => sessionStorage.removeItem(CHUNK_RELOAD_KEY), 10_000);
+    return () => {
+      window.removeEventListener("vite:preloadError", onPreloadError);
+      window.removeEventListener("unhandledrejection", onRejection);
+      window.clearTimeout(clear);
+    };
+  }, []);
 
   return (
     <QueryClientProvider client={queryClient}>
